@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间必须是接口-->
+<mapper namespace="com.prj.mapper.RoleMapper">
+    <!--用户-->
+    <resultMap id="userMap" type="User">
+        <id column="id" property="id"></id>
+        <result column="uname" property="uname"></result>
+        <association property="role" javaType="Role" resultMap="roleMap"></association>
+    </resultMap>
+    <!--角色-->
+    <resultMap id="roleMap" type="Role">
+        <id column="id" property="id"></id>
+        <result column="rname" property="rname"></result>
+    </resultMap>
+
+    <select id="queryRoleList"  resultMap="roleMap" >
+        SELECT * FROM `role`
+    </select>
+
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间必须是接口-->
+<mapper namespace="com.prj.mapper.UserMapper">
+    <!--用户-->
+    <resultMap id="userMap" type="User">
+        <id column="uid" property="id"></id>
+        <result column="uname" property="uname"></result>
+        <association property="role" javaType="Role" resultMap="roleMap"></association>
+    </resultMap>
+    <!--角色-->
+    <resultMap id="roleMap" type="Role">
+        <id column="id" property="id"></id>
+        <result column="rname" property="rname"></result>
+    </resultMap>
+
+    <select id="queryList"  resultMap="userMap" parameterType="int">
+        SELECT * FROM USER u,role r WHERE u.rid=r.id limit #{page},#{limit};
+    </select>
+
+    <select id="count" resultType="int">
+        select COUNT(*) from user;
+    </select>
+
+    <insert id="addUser" parameterType="User" >
+        INSERT INTO `user`(uname,rid) VALUES(#{uname},#{role.id})
+    </insert>
+
+    <delete id="delUser" parameterType="int">
+        delete from user where id=#{id}
+    </delete>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE USER SET uname=#{uname},rid=#{role.id} where id=#{id}
+    </update>
+
+    <select id="queryById" parameterType="int" resultMap="userMap">
+        SELECT u.uname,u.id uid,r.id rid,r.rname FROM USER u,role r WHERE u.rid=r.id and u.id=#{id}
+    </select>
+
+</mapper>
